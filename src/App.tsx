@@ -22,4 +22,3 @@ export default function App(): ReactNode {
     )
 };
 
-cd react-first-projectcd react-first-projectcd react-first-project
