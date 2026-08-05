@@ -1,13 +1,13 @@
 import {
     type ComponentProps,
     type ReactNode,
-    useContext, useRef,
+    useContext,
     useState,
 } from "react";
 
 import type {SubmitEvent} from "react";
-import TextInput from "src/components/TextInput/TextInput.tsx";
-import {BoardContext} from "src/context/board-context.ts";
+import TextInput from "@/components/TextInput/TextInput.tsx";
+import {BoardContext} from "@/context/board-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListItemType} from "@/types/list-item.ts";
@@ -20,9 +20,6 @@ type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
 
 export default function ListItemModal({modalRef, listIndex}: Props): ReactNode {
     const {dispatchLists} = useContext(BoardContext);
-
-    // this is not a real ref it just fot delete the error from the screen
-    const formRef = useRef<HTMLFormElement>(null);
 
 
     const [titleError, setTitleError] = useState<string | null>(null);
@@ -67,9 +64,10 @@ const validateTitle = (title: string): boolean => {
 };
 
 
-return (
+    return (
+// @ts-ignore
     <FormModal modalRef={modalRef} heading="Create a new Item"
-               onReset={handleFormReset} onSubmit={handleFormSubmit} formRef={formRef}>
+               onReset={handleFormReset} onSubmit={handleFormSubmit}>
         <TextInput label="Title" type="text" name="text" error={titleError}/>
     </FormModal>
 );

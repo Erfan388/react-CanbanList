@@ -5,8 +5,8 @@ import {
 } from "react";
 
 import styles from "./FormModal.module.css";
-import Modal from "src/modals/Modal/Modal.tsx";
-import Button from "src/components/Button/Button.tsx";
+import Modal from "@/modals/Modal/Modal.tsx";
+import Button from "@/components/Button/Button.tsx";
 import clsx from "clsx";
 
 type ModalProps = {

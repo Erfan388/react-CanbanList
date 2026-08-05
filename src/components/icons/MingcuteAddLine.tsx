@@ -1,4 +1,4 @@
-import {memo,type SVGProps, type ReactNode} from 'react'
+import {memo,type SVGProps} from 'react'
 
 const MingcuteAddLine = memo(function MingcuteAddLine(props: SVGProps<SVGSVGElement>) {
     return (

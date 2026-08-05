@@ -1,7 +1,7 @@
 import {type ComponentProps, type ReactNode, type RefObject, type MouseEvent} from "react";
 
 import styles from './Modal.module.css';
-import IconButton from "react-first-project/src/components/IconButton/IconButton.tsx";
+import IconButton from "@/components/IconButton/IconButton.tsx";
 import CloseLineIcon from '@iconify-react/mingcute/close-line';
 import clsx from "clsx";
 

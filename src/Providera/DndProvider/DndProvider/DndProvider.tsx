@@ -74,7 +74,7 @@ export default function DndProvider({children}: Props): ReactNode {
             {
                 activeData && (
                     activeData.isList ? (
-                        <List Presentational={true} listIndex={activeData.listIndex} list={activeData.list}/>
+                        <List presentational={true} listIndex={activeData.listIndex} list={activeData.list}/>
                     ) : (
                         <ListItem
                             Presentational

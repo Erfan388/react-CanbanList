@@ -26,7 +26,7 @@ export default function ListItems({presentational, list, listIndex}: Props): Rea
                 {
                     list.items.map((item, itemIndex) => (
                         <li key={item.id}>
-                            <ListItem presentational={presentational} listIndex={listIndex} itemIndex={itemIndex} item={item}/>
+                            <ListItem Presentational={presentational} listIndex={listIndex} itemIndex={itemIndex} item={item}/>
                         </li>
                     ))
                 }

@@ -1,4 +1,4 @@
-import React, {type SVGProps, memo } from 'react'
+import  {type SVGProps, memo } from 'react'
 
 const MingcuteMore1Line = memo(function MingcuteMore1Line(props: SVGProps<SVGSVGElement>) {
   return (
