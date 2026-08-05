@@ -1,17 +1,16 @@
 .form-modal {
+  form {
+    display: grid;
+    gap: 1rem;
 
-    form{
-        display: grid;
-        gap: 1rem;
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
 
-        .actions{
-            display: flex;
-            justify-content: flex-end;
-            gap: .5rem;
-
-            .cancel{
-                margin-inline-start: auto;
-            }
-        }
+      .cancel {
+        margin-inline-start: auto;
+      }
     }
+  }
 }

@@ -1,30 +1,22 @@
 .home-page {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
 
+    margin-block-end: 0.5rem;
 
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-
-        margin-block-end: 0.5rem;
-
-        .title {
-
-        }
-
-
+    .title {
     }
+  }
 
-    .boards {
+  .boards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1rem;
 
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-        gap: 1rem;
-
-        > li {
-
-        }
+    > li {
     }
-
+  }
 }
