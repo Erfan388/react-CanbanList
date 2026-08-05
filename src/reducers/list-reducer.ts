@@ -4,6 +4,15 @@ import type {Draft} from "immer";
 import {arrayMove} from "@dnd-kit/sortable";
 
 export type ListAction =
+    {
+        type: "list_created";
+        list: ListType;
+    } |
+    {
+        type: "List_dragged_end";
+        activeListIndex: number;
+        overListIndex: number;
+    }
     | {
     type: "Item_created";
     listIndex: number;
@@ -28,16 +37,28 @@ export type ListAction =
         activeListIndex: number;
         activeItemIndex: number;
         overItemIndex: number;
-    } |
-    {
-        type: "List_dragged_end";
-        activeListIndex: number;
-        overListIndex: number;
     };
 
 
 export function listsReducer(draft: Draft<ListType[]>, action: ListAction): void {
     switch (action.type) {
+        case "List_dragged_end": {
+            const {activeListIndex, overListIndex} = action;
+
+            if (activeListIndex === overListIndex) return;
+
+            const activeList = draft[activeListIndex];
+
+            draft.splice(activeListIndex, 1);
+            draft.splice(overListIndex, 0, activeList);
+
+            return;
+        }
+        case "list_created": {
+            draft.push(action.list);
+            console.log("hello")
+            return;
+        }
         case "Item_created": {
             const list = draft[action.listIndex];
             list.items.push(action.item);
@@ -78,18 +99,6 @@ export function listsReducer(draft: Draft<ListType[]>, action: ListAction): void
                 activeItemIndex,
                 overItemIndex
             );
-
-            return;
-        }
-        case "List_dragged_end": {
-            const {activeListIndex, overListIndex} = action;
-
-            if (activeListIndex === overListIndex) return;
-
-            const activeList = draft[activeListIndex];
-
-            draft.splice(activeListIndex, 1);
-            draft.splice(overListIndex, 0, activeList);
 
             return;
         }
