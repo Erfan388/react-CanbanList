@@ -1,0 +1,28 @@
+.list-item {
+    background-clip: var(--color-surface-3);
+    box-shadow: var(--shadow-2);
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 1rem;
+
+    padding: .5rem;
+
+    border-radius: var(--border-radius-2);
+
+    cursor: default;
+    user-select: none;
+
+    button {
+        opacity: 0;
+    }
+
+    &:not(.Presentational) {
+        &:hover {
+            button {
+                opacity: 1;
+            }
+        }
+    }
+}

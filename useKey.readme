@@ -1,0 +1,154 @@
+// import { useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from './assets/vite.svg'
+// import heroImg from './assets/hero.png'
+// import {useState} from "react";
+import {type ReactNode, useState} from "react";
+
+import "./App.css";
+
+// type User = {
+//     id: number;
+//     username: string;
+//     role: 'user' | 'admin';
+// }
+//
+// export default function App(): ReactNode {
+//     const [user, setUser] = useState<User[]>([
+//         {
+//             username: 'Erfan',
+//             role: 'admin',
+//             id: 1
+//         },
+//         {
+//             username: 'kian',
+//             role: 'user',
+//             id: 2
+//         },
+//         {
+//             username: 'korosh',
+//             role: 'user',
+//             id: 3
+//         }
+//     ])
+//
+//     const AddNewUser = (): void => {
+//         setUser((old) => {
+//             const clone = [...old];
+//
+//             clone.push({
+//                 username: 'NewUser',
+//                 role: 'user',
+//                 id: old.length + 1
+//             });
+//             return clone;
+//         });
+//     };
+//
+//
+//     return (
+//         <div>
+//             <div>
+//                 <ul key={user.id}>
+//                     {user.map((user) => (
+//                         <ListItem key={user.id} user={user}/>
+//                     ))}
+//                 </ul>
+//                 <button onClick={AddNewUser}>click Here</button>
+//             </div>
+//             <div>
+//                 <br/>
+//                 <label>Enter your Name : <input className="userName"/></label>
+//             </div>
+//         </div>
+//     )
+// };
+//
+// type itemProps = {
+//     user: User;
+// }
+//
+// const ListItem = ({user}: itemProps): ReactNode => {
+//
+//     return (
+//         <h3>
+//             {user.role} : {user.username} --- ({user.id})
+//             <br/>
+//         </h3>
+//
+//     )
+//
+// }
+type User = {
+    id: number;
+    username: string;
+    role: 'user' | 'admin';
+};
+
+export default function App(): ReactNode {
+    const [users, setUsers] = useState<User[]>([
+        {id: 1, username: 'Erfan', role: 'admin'},
+        {id: 2, username: 'kian', role: 'user'},
+        {id: 3, username: 'korosh', role: 'user'}
+    ]);
+
+    const [newUsername, setNewUsername] = useState<string>("");   // ← state جدید برای ورودی
+
+    const AddNewUser = (): void => {
+        if (!newUsername.trim()) return;   // جلوگیری از اضافه کردن اسم خالی
+
+        setUsers((old) => [
+            ...old,
+            {
+                id: old.length + 1,
+                username: newUsername.trim(),
+                role: 'user'
+            }
+        ]);
+
+        setNewUsername("");   // پاک کردن ورودی بعد از اضافه کردن
+    };
+
+    return (
+        <div>
+            <div>
+                <ul>
+                    {users.map((user) => (
+                        <ListItem key={user.id} user={user}/>
+                    ))}
+                </ul>
+
+                <button onClick={AddNewUser}>Add User</button>
+            </div>
+
+            <div>
+                <br/>
+                <label>
+                    Enter your Name:{" "}
+                    <input
+                        className="userName"
+                        value={newUsername}                    // دوطرفه کردن ورودی
+                        onChange={(e) => setNewUsername(e.target.value)}  // مهم‌ترین قسمت
+                        placeholder="نام کاربر جدید"
+                    />
+                </label>
+            </div>
+        </div>
+    );
+}
+
+type itemProps = {
+    user: User;
+};
+
+const ListItem = ({user}: itemProps): ReactNode => {
+    return (
+        <h3>
+            {user.role} : {user.username} --- ({user.id})
+            <br/>
+        </h3>
+    );
+};
+
+
+

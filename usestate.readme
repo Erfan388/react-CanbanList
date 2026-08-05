@@ -1,0 +1,51 @@
+// import { useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from './assets/vite.svg'
+// import heroImg from './assets/hero.png'
+import {useState} from "react";
+import type {ReactNode} from "react";
+
+import "@/App.css";
+
+type User = {
+    name: string;
+    age: number;
+}
+
+function App(): ReactNode {
+    // @ts-ignore
+    const [text, setText] = useState<Readonly<User>>({
+        name: "Erfan",
+        age: 15
+    });
+    const clickButtonHandler = (): void => {
+        setText({
+            ...text,
+            age: 16
+        })
+    };
+
+    const [number, setNumber] = useState<Number[]>([15, 5, 3, 6, 5, 8, 4, 4, 7, 6, 48, 5, 4]);
+    const clickFilterHandler = (): void => {
+        setNumber((num) => num.filter((a) => a <= 5))
+    }
+
+
+    // jsx -- html
+    return (
+        <>
+            <>
+                <h2>hello</h2>
+                <button onClick={clickButtonHandler}>click here if you here</button>
+                <h3>name: {text.name} <br/> age: {text.age}</h3>
+            </>
+            <>
+                <h3>{JSON.stringify(number, null, 5)}</h3>
+                <button onClick={clickFilterHandler}>Filter</button>
+            </>
+        </>
+
+    );
+}
+
+export default App;

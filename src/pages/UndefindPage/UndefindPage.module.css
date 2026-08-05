@@ -1,0 +1,17 @@
+.undefind-page {
+
+    margin-inline: auto;
+    margin-top: 100px;
+
+    .title {
+        color: red;
+    }
+
+    .link {
+        color: blue;
+        font-weight: bolder;
+        font-size: large;
+    }
+
+
+}

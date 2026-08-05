@@ -1,0 +1,39 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    caret-color: var(--color-primary);
+    accent-color: var(--color-primary);
+
+
+    font-family: "Vazirmatn", sans-serif;
+}
+
+
+body {
+    background-color: var(--color-surface-1);
+
+    /*inline-size: min(75rem, 50% - 2rem);*/
+
+    margin-inline-start: auto;
+
+    font-size: var(--fz-400);
+}
+
+ul{
+list-style: none;
+}
+
+a {
+    color: var(--color-primary);
+
+    &:hover {
+        color: var(--color-primary-dark);
+    }
+}

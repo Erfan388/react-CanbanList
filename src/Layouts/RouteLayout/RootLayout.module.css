@@ -1,0 +1,9 @@
+.RootLayout {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+
+    block-size: 100dvh;
+    width: min(1200px, 100%);
+    margin-inline: auto;
+    padding-inline: 50px;
+}

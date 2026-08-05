@@ -1,0 +1,33 @@
+.text-input {
+    display: grid;
+
+    input {
+        border: 1px solid var(--color-gray-5);
+
+        padding: .5rem;
+
+        border-radius: var(--border-radius-1);
+
+        &:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: -2px;
+        }
+    }
+
+
+    .error {
+        color: rgb(255 0 0 / 0.8);
+        padding-top: .2rem;
+        font-size: 14px;
+    }
+
+    &.error {
+        input{
+            border: 1px solid rgb(255 0 0 / 0.8);
+            ::placeholder{
+                color: rgb(255 0 0 / 0.8);
+            }
+        }
+    }
+
+}
