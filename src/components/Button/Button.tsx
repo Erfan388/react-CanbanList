@@ -4,8 +4,8 @@ import styles from "./Button.module.css";
 import clsx from "clsx";
 
 type Props = ComponentProps<'button'> & {
-    variant?: "solid" | "outlined";
-    color?: "primary" | "default";
+    variant?: "solid" | "outlined" | "text";
+    color?: "primary" | "default" | "danger";
 }
 
 const Button = memo(function Button({

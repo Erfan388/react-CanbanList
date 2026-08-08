@@ -79,14 +79,22 @@
   --color-surface-3: var(--color-white);
 
   /* TEXT */
-  --color-text: var(--color-gray-9);
+  --color-text: var(--color-gray-8);
 
   /* PRIMARY */
   --color-primary-light: var(--color-blue-6);
   --color-primary: var(--color-blue-8);
   --color-primary-dark: var(--color-blue-9);
   --color-primary-contrast: var(--color-white);
+
+  /* PRIMARY */
+  --color-danger-light: var(--color-red-6);
+  --color-danger: var(--color-red-8);
+  --color-danger-dark: var(--color-red-9);
+  --color-danger-contrast: var(--color-white);
 }
+
+
 
 /* THEME COLORS */
 
