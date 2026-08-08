@@ -1,9 +1,10 @@
 import {type ReactNode, useRef} from "react";
 
 import styles from './ListHeader.module.css';
-import MingcuteAddLine from "@/components/icons/MingcuteAddLine.tsx";
 import IconButton from "@/components/IconButton/IconButton.tsx";
+import MingcuteAddLine from "@/components/icons/MingcuteAddLine.tsx";
 import MingcuteMore1Line from "@/components/icons/MingcuteMore1Line.tsx";
+import DotsLineIcon from '@iconify-react/mingcute/dots-line';
 import ListItemModal from "../../../../modals/ListItemModal/ListItemModal.tsx";
 import type {SyntheticListenerMap} from "@dnd-kit/core/dist/hooks/utilities";
 
@@ -23,7 +24,7 @@ export default function ListHeader({title, listIndex, listeners}: Props): ReactN
 
     return <div className={styles['list-header']}>
         <div className={styles['drag-handle']} {...listeners}>
-                <MingcuteMore1Line />
+            <DotsLineIcon height="1em" />
             <div className={styles.title}>{title}</div>
         </div>
         <div className={styles.actions}>

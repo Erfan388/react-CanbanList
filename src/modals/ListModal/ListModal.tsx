@@ -32,9 +32,14 @@ export default function ListModal({modalRef}: Props): ReactNode {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
+        const rawTitle = formData.get("title");
+
+        console.log("rawTitle:", rawTitle);
+        console.log("type:", typeof rawTitle);
+
         const values: Values = {
-            title: formData.get("title") as string,
-        }
+            title: typeof rawTitle === "string" ? rawTitle : "",
+        };
 
         if (!validateTitle(values.title)) {
             return;
@@ -50,7 +55,7 @@ export default function ListModal({modalRef}: Props): ReactNode {
 
     const validateTitle = (title: string): boolean => {
         if (title.trim().length === 0) {
-            setTitleError("you cant create an empty item!");
+            setTitleError("you can't create an empty item!");
             return false;
         }
         if (title.trim().length < 5) {
