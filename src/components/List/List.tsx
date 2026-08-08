@@ -34,7 +34,7 @@ const List = memo(function List({presentational, listIndex, list}: Props): React
                 }}
                 {...attributes}
     >
-        < ListHeader title={list.title} listIndex={listIndex} listeners={listeners}/>
+        < ListHeader list={list} listIndex={listIndex} listeners={listeners}/>
         <ListItems presentational={presentational} listIndex={listIndex} list={list}/>
     </div>;
 });

@@ -17,9 +17,10 @@ type Values = Omit<ListType, "id" | "items">;
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     listIndex?: number;
+    defaultValues?: Partial<Values>;
 };
 
-export default function ListModal({modalRef, listIndex}: Props): ReactNode {
+export default function ListModal({modalRef, listIndex, defaultValues}: Props): ReactNode {
     const {dispatchLists} = useContext(BoardContext);
 
 
@@ -48,11 +49,17 @@ export default function ListModal({modalRef, listIndex}: Props): ReactNode {
             return;
         }
 
-        const id = globalThis.crypto.randomUUID();
-        dispatchLists({type: "list_created", list: {id, items: [], ...values}})
-        modalRef.current?.close();
+        if (listIndex !== undefined) {
+            dispatchLists({type: "list_edited", listIndex, list: values})
+            toast.success("list edited  successfully.!");
+        } else {
+            const id = globalThis.crypto.randomUUID();
+            dispatchLists({type: "list_created", list: {id, items: [], ...values}})
+            toast.success("list created successfully.!");
+        }
 
-        toast.success("list created successfully.!");
+
+        modalRef.current?.close();
     };
 
     const handleRemoveButtonClick = (): void => {
@@ -82,19 +89,19 @@ export default function ListModal({modalRef, listIndex}: Props): ReactNode {
 
     return (
 // @ts-ignore
-        <FormModal modalRef={modalRef} heading="Create a new list"
+        <FormModal modalRef={modalRef} heading={listIndex !== undefined ? "Edit this List" : "create a new list"}
                    onReset={handleFormReset} onSubmit={handleFormSubmit}
                    extraActions={
-                       listIndex !== undefined &&(
-                       <Button
-                           type="button"
-                           variant="text"
-                           color="danger"
-                           onClick={handleRemoveButtonClick}>
-                           Remove
-                       </Button>
-                   )}>
-            <TextInput label="Title" type="text" name="text" error={titleError}/>
+                       listIndex !== undefined && (
+                           <Button
+                               type="button"
+                               variant="text"
+                               color="danger"
+                               onClick={handleRemoveButtonClick}>
+                               Remove
+                           </Button>
+                       )}>
+            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="text" error={titleError}/>
         </FormModal>
     );
 }

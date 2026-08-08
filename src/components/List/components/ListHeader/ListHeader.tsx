@@ -8,14 +8,15 @@ import ListItemModal from "../../../../modals/ListItemModal/ListItemModal.tsx";
 import type {SyntheticListenerMap} from "@dnd-kit/core/dist/hooks/utilities";
 import MingcuteEdit2Line from "@/components/icons/MingcuteEdit2Line.tsx";
 import ListModal from "@/modals/ListModal/ListModal.tsx";
+import type {ListType} from "@/types/list.ts";
 
 type Props = {
-    title: string;
+    list: ListType;
     listIndex: number;
     listeners?: SyntheticListenerMap;
 }
 
-export default function ListHeader({title, listIndex, listeners}: Props): ReactNode {
+export default function ListHeader({list, listIndex, listeners}: Props): ReactNode {
     const listModalRef = useRef<HTMLDialogElement>(null);
     const listItemModalRef = useRef<HTMLDialogElement>(null);
 
@@ -30,7 +31,7 @@ export default function ListHeader({title, listIndex, listeners}: Props): ReactN
     return <div className={styles['list-header']}>
         <div className={styles['drag-handle']} {...listeners}>
             <DotsLineIcon height="1em"/>
-            <div className={styles.title}>{title}</div>
+            <div className={styles.title}>{list.title}</div>
         </div>
         <div className={styles.actions}>
             <IconButton onClick={handleEditListButtonClick}>
@@ -40,7 +41,7 @@ export default function ListHeader({title, listIndex, listeners}: Props): ReactN
                 <MingcuteAddLine/>
             </IconButton>
         </div>
-        <ListModal listIndex={listIndex} modalRef={listModalRef} />
+        <ListModal listIndex={listIndex} modalRef={listModalRef} defaultValues={list}/>
         <ListItemModal modalRef={listItemModalRef} listIndex={listIndex}/>
     </div>;
 }
