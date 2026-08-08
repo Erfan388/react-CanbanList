@@ -11,12 +11,15 @@ import {BoardContext} from "@/context/board-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListType} from "@/types/list.ts";
+import Button from "@/components/Button/Button.tsx";
 
 type Values = Omit<ListType, "id" | "items">;
 
-type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {};
+type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
+    listIndex?: number;
+};
 
-export default function ListModal({modalRef}: Props): ReactNode {
+export default function ListModal({modalRef, listIndex}: Props): ReactNode {
     const {dispatchLists} = useContext(BoardContext);
 
 
@@ -52,6 +55,15 @@ export default function ListModal({modalRef}: Props): ReactNode {
         toast.success("list created successfully.!");
     };
 
+    const handleRemoveButtonClick = (): void => {
+        if (!listIndex) return;
+
+        dispatchLists({type: "list_removed", listIndex})
+        toast.success("list removed successfully.!");
+
+        modalRef.current?.close();
+    }
+
 
     const validateTitle = (title: string): boolean => {
         if (title.trim().length === 0) {
@@ -71,7 +83,17 @@ export default function ListModal({modalRef}: Props): ReactNode {
     return (
 // @ts-ignore
         <FormModal modalRef={modalRef} heading="Create a new list"
-                   onReset={handleFormReset} onSubmit={handleFormSubmit}>
+                   onReset={handleFormReset} onSubmit={handleFormSubmit}
+                   extraActions={
+                       listIndex !== undefined &&(
+                       <Button
+                           type="button"
+                           variant="text"
+                           color="danger"
+                           onClick={handleRemoveButtonClick}>
+                           Remove
+                       </Button>
+                   )}>
             <TextInput label="Title" type="text" name="text" error={titleError}/>
         </FormModal>
     );

@@ -7,7 +7,13 @@ export type ListAction =
     {
         type: "list_created";
         list: ListType;
-    } |
+    }
+    |
+    {
+        type: "list_removed";
+        listIndex: number;
+    }
+    |
     {
         type: "List_dragged_end";
         activeListIndex: number;
@@ -42,6 +48,14 @@ export type ListAction =
 
 export function listsReducer(draft: Draft<ListType[]>, action: ListAction): void {
     switch (action.type) {
+        case "list_created": {
+            draft.push(action.list);
+            return;
+        }
+        case "list_removed": {
+            draft.splice(action.listIndex, 1);
+            return;
+        }
         case "List_dragged_end": {
             const {activeListIndex, overListIndex} = action;
 
@@ -54,11 +68,7 @@ export function listsReducer(draft: Draft<ListType[]>, action: ListAction): void
 
             return;
         }
-        case "list_created": {
-            draft.push(action.list);
-            console.log("hello")
-            return;
-        }
+
         case "Item_created": {
             const list = draft[action.listIndex];
             list.items.push(action.item);
