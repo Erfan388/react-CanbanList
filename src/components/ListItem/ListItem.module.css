@@ -14,13 +14,13 @@
   cursor: default;
   user-select: none;
 
-  button {
+  >button {
     opacity: 0;
   }
 
   &:not(.Presentational) {
     &:hover {
-      button {
+     > button {
         opacity: 1;
       }
     }

@@ -17,7 +17,7 @@ export default function TextInput({className, error, label, name, ...otherProps}
 
     return <div className={clsx(styles['text-input'], !!error && styles.error, className)}>
         <label htmlFor={id}>{label}</label>
-        <input name="title" id={id} {...otherProps} placeholder="enter yout text"/>
+        <input name={name} id={id} {...otherProps} placeholder="enter yout text"/>
         <span className={styles.error}>{error || "\u00A0"}</span>
     </div>;
 }

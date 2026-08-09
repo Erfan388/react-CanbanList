@@ -17,9 +17,11 @@ type Values = Omit<ListItemType, "id">;
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     listIndex: number;
+    itemIndex: number;
+    defaultValue?: Partial<Values>;
 };
 
-export default function ListItemModal({modalRef, listIndex}: Props): ReactNode {
+export default function ListItemModal({modalRef, listIndex, itemIndex, defaultValue}: Props): ReactNode {
     const {dispatchLists} = useContext(BoardContext);
 
 
@@ -35,45 +37,67 @@ export default function ListItemModal({modalRef, listIndex}: Props): ReactNode {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        const values: Values ={
-            title : formData.get("title") as string,
-            description : formData.get("description") as string,
-            duaDate : formData.get("duaDate") as string,
+
+        const title = formData.get("title");
+        console.log("title", title)
+        console.log("formData:", [...formData.entries()]);
+        if (typeof title !== "string") {
+            return;
+        }
+        const values: Values = {
+            title,
+            description: formData.get("description") as string,
+            duaDate: formData.get("duaDate") as string,
         }
 
-    if (!validateTitle(values.title)) {
-        return;
-    }
+        if (!validateTitle(values.title)) {
+            return;
+        }
 
-    const itemId = globalThis.crypto.randomUUID();
-    dispatchLists({type: "Item_created", listIndex, item: {id: itemId , ...values}})
-    modalRef.current?.close();
+        if (listIndex !== undefined) {
+            dispatchLists({
+                type: "item_edited",
+                listIndex,
+                itemIndex,
+                item:  values,
+            });
+            toast.success("Item edited successfully.!");
+        } else {
+            const itemId = globalThis.crypto.randomUUID();
+            dispatchLists({type: "Item_created", listIndex, item: {id: itemId, ...values}})
+            toast.success("Item created successfully.!");
+        }
 
-    toast.success("Item created successfully.!");
-};
+        modalRef.current?.close();
+    };
 
-const validateTitle = (title: string): boolean => {
-    if (title.trim().length === 0) {
-        setTitleError("you cant create an empty item!");
-        return false;
-    }
-    if (title.trim().length < 5) {
-        setTitleError("at least 5 characters long!");
-        return false;
-    }
+    const validateTitle = (title: string): boolean => {
+        if (title.trim().length === 0) {
+            setTitleError("you cant create an empty item!");
+            return false;
+        }
+        if (title.trim().length < 5) {
+            setTitleError("at least 5 characters long!");
+            return false;
+        }
 
-    setTitleError(null);
-    return true;
-};
+        setTitleError(null);
+        return true;
+    };
 
 
     return (
 // @ts-ignore
-    <FormModal modalRef={modalRef} heading="Create a new Item"
-               onReset={handleFormReset} onSubmit={handleFormSubmit}>
-        <TextInput label="Title" type="text" name="text" error={titleError}/>
-        <TextArea label="Desctiption" name="description" type="text"/>
-        <TextInput label="dua Date" type="date" name="duaDate" error={titleError}/>
-    </FormModal>
-);
+        <FormModal modalRef={modalRef} heading={
+            itemIndex === undefined ? "create a new Item" : "edit this item."
+        }
+                   onReset={handleFormReset} onSubmit={handleFormSubmit}>
+            <TextInput label="Title" type="text" name="title" error={titleError} defaultValue={defaultValue?.title}/>
+            <TextArea label="Desctiption" name="description" type="text" defaultValue={defaultValue?.description}/>
+
+            <TextInput label="dua Date" type="date" name="duaDate" error={titleError}
+                       defaultValue={defaultValue?.duaDate}/>
+
+        </FormModal>
+    );
 }

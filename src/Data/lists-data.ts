@@ -16,7 +16,7 @@ export const listsData: ListType[] = [
         id: '2',
         title: "🔨 Doing",
         items: [
-            {id: '6', title: 'welcome to the ' , description: "" , duaDate: ""},
+            {id: '6', title: 'welcome to the ' , description: "test test" , duaDate: ""},
             {id: '7', title: 'three thousend world' , description: "" , duaDate: ""},
             {id: '8', title: 'three thousend world' , description: "" , duaDate: ""},
             {id: '9', title: 'three thousend world' , description: "" , duaDate: ""},

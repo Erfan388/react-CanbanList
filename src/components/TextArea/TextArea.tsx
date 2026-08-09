@@ -17,7 +17,7 @@ export default function TextArea({className, error, label, name, ...otherProps}:
 
     return <div className={clsx(styles['text-area'], !!error && styles.error, className)}>
         <label htmlFor={id}>{label}</label>
-        <textarea name="title" id={id} {...otherProps} placeholder="enter yout text"/>
+        <textarea name="description" id={id} {...otherProps} placeholder="enter yout text"/>
         <span className={styles.error}>{error || "\u00A0"}</span>
     </div>;
 }

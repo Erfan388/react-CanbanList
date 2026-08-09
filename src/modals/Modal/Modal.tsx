@@ -1,4 +1,4 @@
-import {type ComponentProps, type ReactNode, type RefObject, type MouseEvent} from "react";
+import {type ComponentProps, type ReactNode, type RefObject, type PointerEvent} from "react";
 
 import styles from './Modal.module.css';
 import IconButton from "@/components/IconButton/IconButton.tsx";
@@ -16,17 +16,17 @@ export default function Modal({
                                   ref,
                                   className,
                                   ContentClassName,
-                                  onClick,
+                                  onPointerDown,
                                   heading,
                                   children,
                                   ...otherProps
                               }: Props): ReactNode {
 
-    const handleDialogClick = (event: MouseEvent<HTMLDialogElement>): void => {
+    const handleDialogClick = (event: PointerEvent<HTMLDialogElement>): void => {
         if (event.target === event.currentTarget) {
             ref.current?.close();
         } else {
-            onClick?.(event);
+            onPointerDown?.(event);
         }
     };
 
@@ -36,7 +36,7 @@ export default function Modal({
 
     return (
         <dialog
-            onClick={handleDialogClick} ref={ref} className={clsx(styles.modal, className)}
+            onPointerDown={handleDialogClick} ref={ref} className={clsx(styles.modal, className)}
             {...otherProps}>
             <header className={styles.header}>{heading}
                 <div className={styles.actions}>
