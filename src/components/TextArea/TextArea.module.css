@@ -6,11 +6,13 @@
     display: grid;
 
     textarea {
-        min-block-size: calc(11lh + var(--padding-and-border));
-        block-size: calc(31lh + var(--padding-and-border));
-        max-block-size: calc(51lh + var(--padding-and-border));
+        min-block-size: calc(1lh + var(--padding-and-border));
+        block-size: calc(11lh + var(--padding-and-border));
+        max-block-size: calc(21lh + var(--padding-and-border));
 
         resize: vertical;
+
+        font-size: 16px;
 
         padding: var(--padding);
 

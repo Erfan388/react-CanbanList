@@ -11,6 +11,7 @@ import {BoardContext} from "@/context/board-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListItemType} from "@/types/list-item.ts";
+import TextArea from "@/components/TextArea/TextArea.tsx";
 
 type Values = Omit<ListItemType, "id">;
 
@@ -36,6 +37,8 @@ export default function ListItemModal({modalRef, listIndex}: Props): ReactNode {
         const formData = new FormData(event.currentTarget);
         const values: Values ={
             title : formData.get("title") as string,
+            description : formData.get("description") as string,
+            duaDate : formData.get("duaDate") as string,
         }
 
     if (!validateTitle(values.title)) {
@@ -69,6 +72,8 @@ const validateTitle = (title: string): boolean => {
     <FormModal modalRef={modalRef} heading="Create a new Item"
                onReset={handleFormReset} onSubmit={handleFormSubmit}>
         <TextInput label="Title" type="text" name="text" error={titleError}/>
+        <TextArea label="Desctiption" name="description" type="text"/>
+        <TextInput label="dua Date" type="date" name="duaDate" error={titleError}/>
     </FormModal>
 );
 }
