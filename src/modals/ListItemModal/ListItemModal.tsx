@@ -12,6 +12,7 @@ import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListItemType} from "@/types/list-item.ts";
 import TextArea from "@/components/TextArea/TextArea.tsx";
+import Button from "@/components/Button/Button.tsx";
 
 type Values = Omit<ListItemType, "id">;
 
@@ -59,7 +60,7 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
                 type: "item_edited",
                 listIndex,
                 itemIndex,
-                item:  values,
+                item: values,
             });
             toast.success("Item edited successfully.!");
         } else {
@@ -70,6 +71,15 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
 
         modalRef.current?.close();
     };
+
+    const handleRemoveItemButtonClick = (): void => {
+        if (itemIndex === undefined) return;
+
+        dispatchLists({type: "Item_removed", listIndex, itemIndex});
+        toast.success("item removed successfully.!");
+
+        modalRef.current?.close();
+    }
 
     const validateTitle = (title: string): boolean => {
         if (title.trim().length === 0) {
@@ -89,9 +99,19 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
     return (
 // @ts-ignore
         <FormModal modalRef={modalRef} heading={
-            itemIndex === undefined ? "create a new Item" : "edit this item."
+            itemIndex === undefined ? "Create a new Item" : "Edit existing Item"
         }
-                   onReset={handleFormReset} onSubmit={handleFormSubmit}>
+                   onReset={handleFormReset} onSubmit={handleFormSubmit}
+                   extraActions={
+                       itemIndex !== undefined && (
+                           <Button
+                               type="button"
+                               variant="text"
+                               color="danger"
+                               onClick={handleRemoveItemButtonClick}>
+                               Remove
+                           </Button>
+                       )}>
             <TextInput label="Title" type="text" name="title" error={titleError} defaultValue={defaultValue?.title}/>
             <TextArea label="Desctiption" name="description" type="text" defaultValue={defaultValue?.description}/>
 
