@@ -36,7 +36,7 @@ export default function ColorInput({
 
     return <div className={clsx(styles['color-input'], !!error && styles.error, className)}>
         <label htmlFor={id}>{label}</label>
-        <div className={styles.color}>
+        <div className={styles.colors}>
             {
                 BOARD_COLORS.map(color => (
                     <button key={color} className={clsx(color, color === value && styles.active)} type='button'

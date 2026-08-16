@@ -1,10 +1,11 @@
-import {type ReactNode, use} from "react";
+import {type ReactNode, use, useRef} from "react";
 
 import styles from "./HomePage.module.css";
 import Button from "@/components/Button/Button.tsx";
 import BoardCard from "@/components/boardCard/boardCard.tsx";
 import BoardProvider from "@/Providera/BoardProvider.tsx";
 import {BoardsContext} from "@/context/boards-context.ts";
+import BoardModal from "@/modals/BoardModal/BoardModal.tsx";
 
 
 export default function HomePage(): ReactNode {
@@ -19,12 +20,16 @@ export default function HomePage(): ReactNode {
 function HomePageContent(): ReactNode {
     const {boards} = use(BoardsContext)
 
+    const modalRef = useRef<HTMLDialogElement>(null);
 
+    const handleCreateButtonClick = (): void => {
+        modalRef.current?.showModal();
+    }
     return (
         <div className={styles["home-page"]}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Boards</h1>
-                <Button variant="outlined" color="primary">
+                <Button variant="outlined" onClick={handleCreateButtonClick} color="primary">
                     click
                 </Button>
             </div>
@@ -35,6 +40,7 @@ function HomePageContent(): ReactNode {
                     </li>
                 )}
             </ul>
+            <BoardModal modalRef={modalRef} />
         </div>
     )
 }

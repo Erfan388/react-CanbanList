@@ -10,7 +10,7 @@ export type BoardType = {
 
 export const BOARD_COLORS = Object.freeze
 ([
-    "blue", "green", "yellow", "white", "red", "gray",
+    "blue", "green", "yellow", "red", "gray",
 ] as const);
 
 
