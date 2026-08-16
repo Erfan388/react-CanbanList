@@ -12,14 +12,14 @@ import {
 import type {DraggableData} from "@/types/draggable-data.ts";
 import ListItem from "@/components/ListItem/ListItem.tsx";
 import {detectionCollision} from "@/Providera/DndProvider/utils/collision-detection.ts";
-import {BoardContext} from "@/context/board-context.ts";
+import {ListsContext} from "@/context/lists-context.ts"
 import List from "@/components/List/List.tsx";
 
 
 type Props = PropsWithChildren;
 
 export default function DndProvider({children}: Props): ReactNode {
-    const {dispatchLists} = useContext(BoardContext)
+    const {dispatchLists} = useContext(ListsContext)
 
     const sensors = useSensors(useSensor(PointerSensor));
 

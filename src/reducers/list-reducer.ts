@@ -62,6 +62,10 @@ export type ListAction =
 
 
 export function listsReducer(draft: Draft<ListType[]>, action: ListAction): void {
+    console.log("ACTION:", action.type);
+    console.log("ACTION DATA:", action);
+
+
     switch (action.type) {
         case "list_created": {
             draft.push(action.list);

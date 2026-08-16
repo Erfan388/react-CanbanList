@@ -1,19 +1,19 @@
 
 import {type PropsWithChildren, type ReactNode, useEffect} from "react";
-import {BoardContext} from "@/context/board-context.ts";
-import type {ListType} from "@/types/list.ts";
-import {listsData} from "@/Data/lists-data.ts";
-import {listsReducer} from "@/reducers/list-reducer.ts";
+import {BoardsContext} from "../context/boards-context.ts";
+import type {BoardType} from "@/types/board.ts";
+import {boardsData} from "../Data/boards-data.ts";
+import {boardReducer} from "@/reducers/board-reducer.ts";
 import {useImmerReducer} from "use-immer";
 
-function save(list: ListType[]): void {
-    localStorage.setItem("lists", JSON.stringify(list));
+function save(board: BoardType[]): void {
+    localStorage.setItem("boards", JSON.stringify(board));
 }
 
-function load(): ListType[] {
-    const item = localStorage.getItem("lists");
+function load(): BoardType[] {
+    const item = localStorage.getItem("boards");
     if (!item) {
-        return listsData;
+        return boardsData;
     }
 
     return JSON.parse(item);
@@ -24,16 +24,16 @@ type Props = PropsWithChildren;
 
 export default function BoardProvider({children}: Props): ReactNode {
 
-    const [lists, dispatchLists] = useImmerReducer(listsReducer, undefined, load);
+    const [boards, dispatchBoards] = useImmerReducer(boardReducer, undefined, load);
 
-    useEffect(() => save(lists), [lists]);
+    useEffect(() => save(boards), [boards]);
 
 
 
     return (
-        <BoardContext value={{lists, dispatchLists}}>
+        <BoardsContext value={{boards, dispatchBoards}}>
             {children}
-        </BoardContext>
+        </BoardsContext>
     )
 
 }

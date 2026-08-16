@@ -8,8 +8,4 @@ type ContextValue = {
 }
 
 
-export const BoardContext = createContext<ContextValue>({
-    lists: [],
-    dispatchLists: () => {
-    },
-})
+export const ListsContext = createContext<ContextValue>({} as ContextValue)

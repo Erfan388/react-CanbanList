@@ -7,7 +7,7 @@ import {
 
 import type {SubmitEvent} from "react";
 import TextInput from "@/components/TextInput/TextInput.tsx";
-import {BoardContext} from "@/context/board-context.ts";
+import {ListsContext} from "@/context/lists-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListItemType} from "@/types/list-item.ts";
@@ -23,7 +23,7 @@ type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
 };
 
 export default function ListItemModal({modalRef, listIndex, itemIndex, defaultValue}: Props): ReactNode {
-    const {dispatchLists} = useContext(BoardContext);
+    const {dispatchLists} = useContext(ListsContext);
 
 
     const [titleError, setTitleError] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
             return;
         }
 
-        if (listIndex !== undefined) {
+        if (itemIndex !== undefined) {
             dispatchLists({
                 type: "item_edited",
                 listIndex,
@@ -114,7 +114,6 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
                        )}>
             <TextInput label="Title" type="text" name="title" error={titleError} defaultValue={defaultValue?.title}/>
             <TextArea label="Desctiption" name="description" type="text" defaultValue={defaultValue?.description}/>
-
             <TextInput label="dua Date" type="date" name="duaDate" error={titleError}
                        defaultValue={defaultValue?.duaDate}/>
 

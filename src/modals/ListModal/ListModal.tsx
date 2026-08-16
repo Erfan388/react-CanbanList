@@ -7,7 +7,7 @@ import {
 
 import type {SubmitEvent} from "react";
 import TextInput from "@/components/TextInput/TextInput.tsx";
-import {BoardContext} from "@/context/board-context.ts";
+import {ListsContext} from "@/context/lists-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListType} from "@/types/list.ts";
@@ -21,7 +21,7 @@ type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
 };
 
 export default function ListModal({modalRef, listIndex, defaultValues}: Props): ReactNode {
-    const {dispatchLists} = useContext(BoardContext);
+    const {dispatchLists} = useContext(ListsContext);
 
 
     const [titleError, setTitleError] = useState<string | null>(null);
@@ -63,7 +63,7 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
     };
 
     const handleRemoveButtonClick = (): void => {
-        if (!listIndex) return;
+        if (listIndex === undefined) return;
 
         dispatchLists({type: "list_removed", listIndex})
         toast.success("list removed successfully.!");
@@ -101,7 +101,7 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
                                Remove
                            </Button>
                        )}>
-            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="text" error={titleError}/>
+            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="title" error={titleError}/>
         </FormModal>
     );
 }

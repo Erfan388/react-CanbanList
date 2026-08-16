@@ -9,7 +9,7 @@ export default function Header(): ReactNode{
     return (
         <header className={styles.header}>
             <Link className={styles.logo} to="/">
-                <img src="/favicon.svg" />
+                <img alt='favIcon' src="/favicon.svg" />
             </Link>
         </header>
 
