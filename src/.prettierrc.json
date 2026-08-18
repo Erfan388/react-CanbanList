@@ -34,5 +34,7 @@
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "importOrderGroupNamespaceSpecifiers": true
+  "importOrderGroupNamespaceSpecifiers": true,
+  "semi": true,
+  "bracketSameLine": true
 }

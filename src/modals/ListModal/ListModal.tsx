@@ -2,10 +2,8 @@ import {
     type ComponentProps,
     type ReactNode,
     useContext,
-    useState,
 } from "react";
 
-import type {SubmitEvent} from "react";
 import TextInput from "@/components/TextInput/TextInput.tsx";
 import {ListsContext} from "@/context/lists-context.ts";
 import {toast} from "react-toastify";
@@ -13,53 +11,34 @@ import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListType} from "@/types/list.ts";
 import Button from "@/components/Button/Button.tsx";
 import {ListSchema} from "@/schema/list-schema.ts";
-import {z} from "zod";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 type Values = Omit<ListType, "id" | "items">;
-type Errors = { [key in keyof Values]?: string[] };
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     listIndex?: number;
-    defaultValues?: Partial<Values>;
+    defaultValues?: Values;
 };
 
 export default function ListModal({modalRef, listIndex, defaultValues}: Props): ReactNode {
     const {dispatchLists} = useContext(ListsContext);
 
 
-    const [Errors, setErrors] = useState<Errors>({});
+  const { register, handleSubmit, formState: { errors } } = useForm({defaultValues , resolver : zodResolver(ListSchema)});
 
 
-    const handleFormReset = () => {
-        setErrors({})
+    const handleFormSubmit = (values: Values): void => {
 
-    }
-
-    const handleFormSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const rawTitle = formData.get("title");
-
-        const values: Values = {
-            title: typeof rawTitle === "string" ? rawTitle : "",
-        };
-
-        const {data, error} = ListSchema.safeParse(values);
-        if (error) {
-            setErrors(z.flattenError(error).fieldErrors)
-            return;
-        }
 
         if (listIndex !== undefined) {
-            dispatchLists({type: "list_edited", listIndex, list: data})
+            dispatchLists({type: "list_edited", listIndex, list: values})
             toast.success("list edited  successfully.!");
         } else {
             const id = globalThis.crypto.randomUUID();
             dispatchLists({type: "list_created", list: {id, items: [], ...values}})
             toast.success("list created successfully.!");
         }
-
 
         modalRef.current?.close();
     };
@@ -76,7 +55,7 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
     return (
 // @ts-ignore
         <FormModal modalRef={modalRef} heading={listIndex !== undefined ? "Edit this List" : "create a new list"}
-                   onReset={handleFormReset} onSubmit={handleFormSubmit}
+                   onSubmit={handleSubmit (handleFormSubmit)}
                    extraActions={
                        listIndex !== undefined && (
                            <Button
@@ -87,7 +66,7 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
                                Remove
                            </Button>
                        )}>
-            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="title" error={Errors.title?.  [0]}/>
+            <TextInput {...register('title')}  label="Title" type="text" error={errors.title?.message}/>
         </FormModal>
     );
 }
