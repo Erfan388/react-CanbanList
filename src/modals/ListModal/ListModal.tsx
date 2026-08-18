@@ -12,8 +12,11 @@ import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListType} from "@/types/list.ts";
 import Button from "@/components/Button/Button.tsx";
+import {ListSchema} from "@/schema/list-schema.ts";
+import {z} from "zod";
 
 type Values = Omit<ListType, "id" | "items">;
+type Errors = { [key in keyof Values]?: string[] };
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     listIndex?: number;
@@ -24,11 +27,11 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
     const {dispatchLists} = useContext(ListsContext);
 
 
-    const [titleError, setTitleError] = useState<string | null>(null);
+    const [Errors, setErrors] = useState<Errors>({});
 
 
     const handleFormReset = () => {
-        setTitleError(null)
+        setErrors({})
 
     }
 
@@ -38,19 +41,18 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
         const formData = new FormData(event.currentTarget);
         const rawTitle = formData.get("title");
 
-        console.log("rawTitle:", rawTitle);
-        console.log("type:", typeof rawTitle);
-
         const values: Values = {
             title: typeof rawTitle === "string" ? rawTitle : "",
         };
 
-        if (!validateTitle(values.title)) {
+        const {data, error} = ListSchema.safeParse(values);
+        if (error) {
+            setErrors(z.flattenError(error).fieldErrors)
             return;
         }
 
         if (listIndex !== undefined) {
-            dispatchLists({type: "list_edited", listIndex, list: values})
+            dispatchLists({type: "list_edited", listIndex, list: data})
             toast.success("list edited  successfully.!");
         } else {
             const id = globalThis.crypto.randomUUID();
@@ -71,22 +73,6 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
         modalRef.current?.close();
     }
 
-
-    const validateTitle = (title: string): boolean => {
-        if (title.trim().length === 0) {
-            setTitleError("you can't create an empty item!");
-            return false;
-        }
-        if (title.trim().length < 5) {
-            setTitleError("at least 5 characters long!");
-            return false;
-        }
-
-        setTitleError(null);
-        return true;
-    };
-
-
     return (
 // @ts-ignore
         <FormModal modalRef={modalRef} heading={listIndex !== undefined ? "Edit this List" : "create a new list"}
@@ -101,7 +87,7 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
                                Remove
                            </Button>
                        )}>
-            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="title" error={titleError}/>
+            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="title" error={Errors.title?.  [0]}/>
         </FormModal>
     );
 }

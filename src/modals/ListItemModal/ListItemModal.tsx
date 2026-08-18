@@ -40,8 +40,6 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
         const formData = new FormData(event.currentTarget);
 
         const title = formData.get("title");
-        console.log("title", title)
-        console.log("formData:", [...formData.entries()]);
         if (typeof title !== "string") {
             return;
         }
