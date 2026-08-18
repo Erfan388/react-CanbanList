@@ -13,8 +13,12 @@ import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListItemType} from "@/types/list-item.ts";
 import TextArea from "@/components/TextArea/TextArea.tsx";
 import Button from "@/components/Button/Button.tsx";
+import {ListItemSchema} from "@/schema/list-item-schema.ts";
+import {z} from "zod";
 
 type Values = Omit<ListItemType, "id">;
+type Errors = { [key in keyof Values]?: string[] };
+
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     listIndex: number;
@@ -26,12 +30,11 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
     const {dispatchLists} = useContext(ListsContext);
 
 
-    const [titleError, setTitleError] = useState<string | null>(null);
+    const [Errors, setErrors] = useState<Errors>({});
 
 
     const handleFormReset = () => {
-        setTitleError(null)
-
+        setErrors({})
     }
 
     const handleFormSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
@@ -49,7 +52,9 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
             duaDate: formData.get("duaDate") as string,
         }
 
-        if (!validateTitle(values.title)) {
+        const {data, error} = ListItemSchema.safeParse(values);
+        if (error) {
+            setErrors(z.flattenError(error).fieldErrors)
             return;
         }
 
@@ -58,7 +63,7 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
                 type: "item_edited",
                 listIndex,
                 itemIndex,
-                item: values,
+                item: data,
             });
             toast.success("Item edited successfully.!");
         } else {
@@ -79,21 +84,6 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
         modalRef.current?.close();
     }
 
-    const validateTitle = (title: string): boolean => {
-        if (title.trim().length === 0) {
-            setTitleError("you cant create an empty item!");
-            return false;
-        }
-        if (title.trim().length < 5) {
-            setTitleError("at least 5 characters long!");
-            return false;
-        }
-
-        setTitleError(null);
-        return true;
-    };
-
-
     return (
 // @ts-ignore
         <FormModal modalRef={modalRef} heading={
@@ -110,10 +100,9 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
                                Remove
                            </Button>
                        )}>
-            <TextInput label="Title" type="text" name="title" error={titleError} defaultValue={defaultValue?.title}/>
-            <TextArea label="Desctiption" name="description" type="text" defaultValue={defaultValue?.description}/>
-            <TextInput label="dua Date" type="date" name="duaDate" error={titleError}
-                       defaultValue={defaultValue?.duaDate}/>
+            <TextInput label="Title" type="text" name="title"  error={Errors.title?.  [0]} defaultValue={defaultValue?.title}/>
+            <TextArea label="Desctiption" name="description"  type="text" defaultValue={defaultValue?.description}  error={Errors.description?.[0]}/>
+            <TextInput label="dua Date" type="date" name="duaDate" error={Errors.duaDate?.[0]} defaultValue={defaultValue?.duaDate}/>
 
         </FormModal>
     );
