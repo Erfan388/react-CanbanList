@@ -9,7 +9,6 @@ import {ListsContext} from "@/context/lists-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListType} from "@/types/list.ts";
-import Button from "@/components/Button/Button.tsx";
 import {ListSchema} from "@/schema/list-schema.ts";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -56,16 +55,7 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
 // @ts-ignore
         <FormModal modalRef={modalRef} heading={listIndex !== undefined ? "Edit this List" : "create a new list"}
                    onSubmit={handleSubmit (handleFormSubmit)}
-                   extraActions={
-                       listIndex !== undefined && (
-                           <Button
-                               type="button"
-                               variant="text"
-                               color="danger"
-                               onClick={handleRemoveButtonClick}>
-                               Remove
-                           </Button>
-                       )}>
+                   onRemove={listIndex !== undefined && handleRemoveButtonClick}>
             <TextInput {...register('title')}  label="Title" type="text" error={errors.title?.message}/>
         </FormModal>
     );

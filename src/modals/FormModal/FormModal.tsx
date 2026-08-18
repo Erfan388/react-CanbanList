@@ -17,7 +17,7 @@ type ModalProps = {
 type FormProps = Omit<ComponentProps<"form">, "ref"> &
     {
         formRef: RefObject<HTMLFormElement | null>;
-        extraActions?: ReactNode;
+        onRemove?: false | (() => void);
     }
 
 
@@ -27,7 +27,7 @@ export default function FormModal({
                                       modalRef,
                                       formRef,
                                       heading,
-                                      extraActions,
+                                      onRemove,
                                       children,
                                       ...otherProps
                                   }: Props): ReactNode {
@@ -53,7 +53,15 @@ export default function FormModal({
             }} {...otherProps}>
                 {children}
                 <div className={styles.actions}>
-                    {extraActions}
+                    {onRemove && (
+                        <Button
+                            type="button"
+                            variant="text"
+                            color="danger"
+                            onClick={onRemove}>
+                            Remove
+                        </Button>
+                    )}
                     <Button type="reset" onClick={handleCancelButtonClick} className={styles.cancel}>Cancel</Button>
                     <Button type='submit' color='primary'>Submit</Button>
                 </div>

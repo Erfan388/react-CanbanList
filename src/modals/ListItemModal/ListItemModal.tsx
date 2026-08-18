@@ -12,7 +12,6 @@ import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {ListItemType} from "@/types/list-item.ts";
 import TextArea from "@/components/TextArea/TextArea.tsx";
-import Button from "@/components/Button/Button.tsx";
 import {ListItemSchema} from "@/schema/list-item-schema.ts";
 import {z} from "zod";
 
@@ -90,16 +89,7 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
             itemIndex === undefined ? "Create a new Item" : "Edit existing Item"
         }
                    onReset={handleFormReset} onSubmit={handleFormSubmit}
-                   extraActions={
-                       itemIndex !== undefined && (
-                           <Button
-                               type="button"
-                               variant="text"
-                               color="danger"
-                               onClick={handleRemoveItemButtonClick}>
-                               Remove
-                           </Button>
-                       )}>
+                   onRemove={itemIndex !== undefined && handleRemoveItemButtonClick}>
             <TextInput label="Title" type="text" name="title"  error={Errors.title?.  [0]} defaultValue={defaultValue?.title}/>
             <TextArea label="Desctiption" name="description"  type="text" defaultValue={defaultValue?.description}  error={Errors.description?.[0]}/>
             <TextInput label="dua Date" type="date" name="duaDate" error={Errors.duaDate?.[0]} defaultValue={defaultValue?.duaDate}/>

@@ -11,7 +11,6 @@ import {BoardsContext} from "@/context/boards-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import type {BoardColor, BoardType} from "@/types/board.ts";
-import Button from "@/components/Button/Button.tsx";
 import TextArea from "@/components/TextArea/TextArea.tsx";
 import ColorInput from "@/components/ColorInput/ColorInput.tsx";
 import {useNavigate} from "react-router";
@@ -85,16 +84,7 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
 // @ts-ignore
         <FormModal modalRef={modalRef} heading={boardId !== undefined ? "Edit this Board" : "create a new board"}
                    onReset={handleFormReset} onSubmit={handleFormSubmit}
-                   extraActions={
-                       boardId !== undefined && (
-                           <Button
-                               type="button"
-                               variant="text"
-                               color="danger"
-                               onClick={handleRemoveButtonClick}>
-                               Remove
-                           </Button>
-                       )}>
+                   onRemove={boardId !== undefined && handleRemoveButtonClick}>
             <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="title" error={Errors.title?. [0]}/>
             <TextArea label="Desctiption" name="description" type="text" defaultValue={defaultValues?.description} error={Errors.description?. [0]}/>
             <ColorInput label="color" name="color" defaultValue={defaultValues?.color} error={Errors.color?. [0]}/>
