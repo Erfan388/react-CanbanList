@@ -15,8 +15,11 @@ import Button from "@/components/Button/Button.tsx";
 import TextArea from "@/components/TextArea/TextArea.tsx";
 import ColorInput from "@/components/ColorInput/ColorInput.tsx";
 import {useNavigate} from "react-router";
+import {BoardSchema} from "@/schema/board-schema.ts";
+import {z} from "zod";
 
 type Values = Omit<BoardType, "id" | "lists">;
+type Errors = { [key in keyof Values]?: string[] };
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     boardId?: string;
@@ -27,12 +30,11 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
     const {dispatchBoards} = useContext(BoardsContext);
 
 
-    const [titleError, setTitleError] = useState<string | null>(null);
+    const [Errors, setErrors] = useState<Errors>({});
 
 
     const handleFormReset = () => {
-        setTitleError(null)
-
+        setErrors({})
     }
 
     const handleFormSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
@@ -47,12 +49,14 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
             color: formData.get("color") as BoardColor,
         };
 
-        if (!validateTitle(values.title)) {
+        const {data, error} = BoardSchema.safeParse(values);
+        if (error) {
+            setErrors(z.flattenError(error).fieldErrors)
             return;
         }
 
         if (boardId !== undefined) {
-            dispatchBoards({type: "board_edited", boardId, board: values})
+            dispatchBoards({type: "board_edited", boardId, board: data})
             toast.success("boardedited  successfully.!");
         } else {
             const id = globalThis.crypto.randomUUID();
@@ -64,7 +68,7 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
         modalRef.current?.close();
     };
 
-        const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleRemoveButtonClick = (): void => {
         if (boardId === undefined) return;
@@ -76,22 +80,6 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
 
         navigate("/");
     }
-
-
-    const validateTitle = (title: string): boolean => {
-        if (title.trim().length === 0) {
-            setTitleError("you can't create an empty item!");
-            return false;
-        }
-        if (title.trim().length < 5) {
-            setTitleError("at least 5 characters long!");
-            return false;
-        }
-
-        setTitleError(null);
-        return true;
-    };
-
 
     return (
 // @ts-ignore
@@ -107,9 +95,9 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
                                Remove
                            </Button>
                        )}>
-            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="title" error={titleError}/>
-            <TextArea label="Desctiption" name="description" type="text" defaultValue={defaultValues?.description}/>
-            <ColorInput label="color" name="color" defaultValue={defaultValues?.color}/>
+            <TextInput defaultValue={defaultValues?.title} label="Title" type="text" name="title" error={Errors.title?. [0]}/>
+            <TextArea label="Desctiption" name="description" type="text" defaultValue={defaultValues?.description} error={Errors.description?. [0]}/>
+            <ColorInput label="color" name="color" defaultValue={defaultValues?.color} error={Errors.color?. [0]}/>
 
         </FormModal>
     );
