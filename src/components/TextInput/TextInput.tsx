@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 type Props = ComponentProps<'input'> & {
     label: string;
-    type: "text";
+    type: "text" | "date";
     error?: string | null;
     name?: string;
 }

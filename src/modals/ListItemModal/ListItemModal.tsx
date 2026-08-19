@@ -2,67 +2,45 @@ import {
     type ComponentProps,
     type ReactNode,
     useContext,
-    useState,
 } from "react";
 
-import type {SubmitEvent} from "react";
 import TextInput from "@/components/TextInput/TextInput.tsx";
 import {ListsContext} from "@/context/lists-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
-import type {ListItemType} from "@/types/list-item.ts";
 import TextArea from "@/components/TextArea/TextArea.tsx";
 import {ListItemSchema} from "@/schema/list-item-schema.ts";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 
-type Values = Omit<ListItemType, "id">;
-type Errors = { [key in keyof Values]?: string[] };
+type Values = z.infer<typeof  ListItemSchema>;
 
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     listIndex: number;
     itemIndex: number;
-    defaultValue?: Partial<Values>;
+    defaultValues?: Values;
 };
 
-export default function ListItemModal({modalRef, listIndex, itemIndex, defaultValue}: Props): ReactNode {
+export default function ListItemModal({modalRef, listIndex, itemIndex, defaultValues}: Props): ReactNode {
     const {dispatchLists} = useContext(ListsContext);
 
+    const {register, reset,handleSubmit, formState: {errors}} = useForm({
+        defaultValues,
+        resolver: zodResolver(ListItemSchema)
+    });
 
-    const [Errors, setErrors] = useState<Errors>({});
 
+    const handleFormSubmit = (values: Values): void => {
 
-    const handleFormReset = () => {
-        setErrors({})
-    }
-
-    const handleFormSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-
-        const title = formData.get("title");
-        if (typeof title !== "string") {
-            return;
-        }
-        const values: Values = {
-            title,
-            description: formData.get("description") as string,
-            duaDate: formData.get("duaDate") as string,
-        }
-
-        const {data, error} = ListItemSchema.safeParse(values);
-        if (error) {
-            setErrors(z.flattenError(error).fieldErrors)
-            return;
-        }
 
         if (itemIndex !== undefined) {
             dispatchLists({
                 type: "item_edited",
                 listIndex,
                 itemIndex,
-                item: data,
+                item: values,
             });
             toast.success("Item edited successfully.!");
         } else {
@@ -85,14 +63,14 @@ export default function ListItemModal({modalRef, listIndex, itemIndex, defaultVa
 
     return (
 // @ts-ignore
-        <FormModal modalRef={modalRef} heading={
+        <FormModal onClose={()=> reset()} modalRef={modalRef} heading={
             itemIndex === undefined ? "Create a new Item" : "Edit existing Item"
         }
-                   onReset={handleFormReset} onSubmit={handleFormSubmit}
+                   onSubmit={handleSubmit(handleFormSubmit)}
                    onRemove={itemIndex !== undefined && handleRemoveItemButtonClick}>
-            <TextInput label="Title" type="text" name="title"  error={Errors.title?.  [0]} defaultValue={defaultValue?.title}/>
-            <TextArea label="Desctiption" name="description"  type="text" defaultValue={defaultValue?.description}  error={Errors.description?.[0]}/>
-            <TextInput label="dua Date" type="date" name="duaDate" error={Errors.duaDate?.[0]} defaultValue={defaultValue?.duaDate}/>
+            <TextInput {...register('title')} label="Title" type="text" error={errors.title?.message}/>
+            <TextArea {...register('description')} label="Desctiption" type="text" error={errors.description?.message}/>
+            <TextInput {...register('duaDate')} label="dua Date" type="date" error={errors.duaDate?.message}/>
 
         </FormModal>
     );

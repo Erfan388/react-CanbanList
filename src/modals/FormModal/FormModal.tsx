@@ -1,7 +1,6 @@
 import {
     type ComponentProps,
-    type ReactNode, type RefObject,
-    useRef,
+    type ReactNode,
 } from "react";
 
 import styles from "./FormModal.module.css";
@@ -12,30 +11,25 @@ import clsx from "clsx";
 type ModalProps = {
     modalRef: ComponentProps<typeof Modal>['ref'];
     heading: ComponentProps<typeof Modal>['heading'];
+    onClose: ComponentProps<typeof Modal>['onClose'];
 }
 
-type FormProps = Omit<ComponentProps<"form">, "ref"> &
-    {
-        formRef: RefObject<HTMLFormElement | null>;
-        onRemove?: false | (() => void);
-    }
+type FormProps = ComponentProps<"form"> & {
+    onRemove?: false | (() => void);
+}
 
 
 type Props = ModalProps & FormProps;
 
 export default function FormModal({
                                       modalRef,
-                                      formRef,
                                       heading,
                                       onRemove,
+                                      onClose,
                                       children,
                                       ...otherProps
                                   }: Props): ReactNode {
-    const InternalFormRef = useRef<HTMLFormElement>(null);
 
-    const handleModalClose = () => {
-        InternalFormRef.current?.reset();
-    };
 
     const handleCancelButtonClick = () => {
         modalRef.current?.close();
@@ -43,14 +37,8 @@ export default function FormModal({
 
     return (
         <Modal ref={modalRef} ContentClassName={clsx(styles["form-modal"])}
-               heading={heading} onClose={handleModalClose}>
-            <form ref={(node) => {
-                InternalFormRef.current = node;
-
-                if (formRef) {
-                    formRef.current = node;
-                }
-            }} {...otherProps}>
+               heading={heading} onClose={onClose}>
+            <form {...otherProps} >
                 {children}
                 <div className={styles.actions}>
                     {onRemove && (
