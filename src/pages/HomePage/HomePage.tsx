@@ -3,21 +3,11 @@ import {type ReactNode, use, useRef} from "react";
 import styles from "./HomePage.module.css";
 import Button from "@/components/Button/Button.tsx";
 import BoardCard from "@/components/boardCard/boardCard.tsx";
-import BoardProvider from "@/Providera/BoardProvider.tsx";
 import {BoardsContext} from "@/context/boards-context.ts";
 import BoardModal from "@/modals/BoardModal/BoardModal.tsx";
 
 
 export default function HomePage(): ReactNode {
-    return (
-        <BoardProvider>
-            <HomePageContent/>
-        </BoardProvider>
-    );
-}
-
-
-function HomePageContent(): ReactNode {
     const {boards} = use(BoardsContext)
 
     const modalRef = useRef<HTMLDialogElement>(null);
@@ -44,3 +34,6 @@ function HomePageContent(): ReactNode {
         </div>
     )
 }
+
+
+

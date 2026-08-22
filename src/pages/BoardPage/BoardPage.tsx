@@ -4,22 +4,12 @@ import styles from "./BoardPage.module.css";
 import ListProvider from "../../Providera/ListProvider.tsx";
 import Board from "@/components/Board/Board.tsx";
 import DndProvider from "@/Providera/DndProvider/DndProvider/DndProvider.tsx";
-import BoardProvider from "@/Providera/BoardProvider.tsx";
 import {BoardsContext} from "@/context/boards-context.ts";
 import {useParams} from "react-router";
 import UndefindPage from "@/pages/UndefindPage/UndefindPage.tsx";
 import BoardPageProvider from "@/Providera/BoardPageProvider.tsx";
 
 export default function BoardPage(): ReactNode {
-    return (
-        <BoardProvider>
-            <BoardPageContent/>
-        </BoardProvider>
-    );
-}
-
-
-function BoardPageContent(): ReactNode {
     const {id} = useParams();
 
     const {boards} = use(BoardsContext)
@@ -30,7 +20,7 @@ function BoardPageContent(): ReactNode {
 
     return (
         <BoardPageProvider board={board}>
-            <ListProvider>
+            <ListProvider key={id}>
                 <DndProvider>
                     <div className={styles["board-page"]}>
                         <Board/>
@@ -40,3 +30,5 @@ function BoardPageContent(): ReactNode {
         </BoardPageProvider>
     );
 }
+
+
