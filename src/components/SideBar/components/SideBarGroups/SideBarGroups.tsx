@@ -4,8 +4,8 @@ import styles from './SideBarGroups.module.css';
 import  SideBarItem from "@/components/SideBar/components/SideBarItem/SideBarItem.tsx";
 import {BoardsContext} from "@/context/boards-context.ts";
 import Home7LineIcon from '@iconify-react/mingcute/home-7-line';
-import MingcuteAddLine from "@/components/icons/MingcuteAddLine.tsx";
 import MingcuteEdit2Line from "@/components/icons/MingcuteEdit2Line.tsx";
+import Initials from "@/components/Intials/Initials.tsx";
 
 
 type SideBarGroup = {
@@ -43,7 +43,7 @@ export default function SideBarGroups(): ReactNode {
                 href: `/board/${board.id}`,
                 title: board.title ,
                 color: board.color,
-                icon: <MingcuteAddLine />
+                icon: <Initials title={board.title} color={board.color}/>
             }))
         }
     ]
