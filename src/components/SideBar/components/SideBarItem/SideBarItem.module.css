@@ -1,0 +1,40 @@
+.sidebar-item {
+    background-color: transparent;
+    color: var(--color-main);
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    inline-size: 100%;
+
+    padding: .5rem var(--item-padding-inline);
+
+    border: none;
+    border-radius: var(--border-radius-1);
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    .icon {
+        display: contents;
+
+        font-size: 1.5rem;
+    }
+
+    .title{
+        text-box-edge: cap alphabetic;
+        text-box-trim: trim-both;
+    }
+
+    &:hover{
+        background-color: var(--color-blue-0);
+        color: var(--color-main);
+    }
+
+    &.active {
+        background-color: var(--color-blue-0);
+        color: var(--color-main);
+    }
+}
