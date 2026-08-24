@@ -1,2 +1,20 @@
-.side-bar-groups {
+.group {
+
+    display: grid;
+    gap: .5rem;
+
+    .title {
+        color: var(--color-gray-5);
+
+        padding-inline: var(--item-padding-inline);
+
+        font-size: 0.75rem;
+
+        text-transform: uppercase;
+    }
+
+    > ul {
+        display: grid;
+        gap: .5rem;
+    }
 }
