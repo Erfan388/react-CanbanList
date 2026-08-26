@@ -23,12 +23,12 @@
         font-size: 1.5rem;
     }
 
-    .title{
+    .title {
         text-box-edge: cap alphabetic;
         text-box-trim: trim-both;
     }
 
-    &:hover{
+    &:hover {
         background-color: var(--color-blue-0);
         color: var(--color-main);
     }
@@ -36,5 +36,11 @@
     &.active {
         background-color: var(--color-blue-0);
         color: var(--color-main);
+    }
+
+    &.Collapsed {
+        .title {
+            display: none;
+        }
     }
 }

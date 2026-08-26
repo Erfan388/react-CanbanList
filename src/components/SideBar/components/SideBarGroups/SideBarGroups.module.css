@@ -17,4 +17,15 @@
         display: grid;
         gap: .5rem;
     }
+
+    &.collapsed {
+        justify-items: center;
+
+        inline-size: 4rem;
+
+        > ul {
+            justify-items: center;
+        }
+
+    }
 }

@@ -1,4 +1,4 @@
-.side-bar {
+.sideBar {
     --item-padding-inline: 1rem;
 
     background-color: var(--color-surface-3);
@@ -9,23 +9,47 @@
     align-content: start;
     gap: 2rem;
 
-    inline-size: auto;
+    inline-size: 17rem;
 
     padding: 1rem;
 
-    .header{
-        .logo{
+    .header {
+        position: relative;
+
+        .logo {
             padding-inline: var(--item-padding-inline);
 
             img {
                 block-size: 2rem;
             }
         }
+
+        .arrow {
+            background-color: var(--color-surface-3);
+
+            position: absolute;
+            right: 0;
+
+            height: 40px;
+            color: black;
+        }
     }
 
-    nav{
+    nav {
         display: grid;
         align-content: start;
         gap: 2rem;
+    }
+
+    &.collapsed {
+        inline-size: 6rem;
+
+        .header {
+            .arrow {
+                background-color: var(--color-surface-2);
+
+                translate: calc(2 * var(--item-padding-inline));
+            }
+        }
     }
 }
