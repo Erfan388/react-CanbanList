@@ -1,11 +1,14 @@
 {
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports"
+  ],
   "importOrder": [
     "^(vite|@vitejs)/(.*)?$",
     "^(react|react-dom)(/.*)?$",
     "^(react-router)(/.*)?$",
     "^react-error-boundary(/(/.*)?$",
     "^(immer|use-immer)(/(.*)?$",
+    "^zustand(/(.*))?$",
     "^@tanstack(/(.*))?$",
     "^@dnd-kit(/(.*))?$",
     "^(react-toastify)(/.*)?$",
