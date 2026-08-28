@@ -6,8 +6,8 @@ import {BoardsContext} from "@/context/boards-context.ts";
 import Home7LineIcon from '@iconify-react/mingcute/home-7-line';
 import Settings5FillIcon from '@iconify-react/mingcute/settings-5-fill';
 import Initials from "@/components/Intials/Initials.tsx";
-import {SideBarContext} from "@/components/SideBar/context/sidebar-context.ts";
 import clsx from "clsx";
+import {useSideBarStore} from "@/stores/sideBar-store.ts";
 
 
 type SideBarGroup = {
@@ -15,8 +15,9 @@ type SideBarGroup = {
     items: ComponentProps<typeof SideBarItem>[];
 }
 export default function SideBarGroups(): ReactNode {
-    const {boards} = useContext(BoardsContext)
-    const {isCollapsed} = useContext(SideBarContext);
+    const isCollapsed = useSideBarStore(state => state.isCollapsed);
+
+    const {boards} = useContext(BoardsContext);
 
     const groups: SideBarGroup[] = [
         {

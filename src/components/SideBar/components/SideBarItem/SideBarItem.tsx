@@ -1,10 +1,10 @@
-import {type ReactNode, useContext} from "react";
+import {type ReactNode} from "react";
 
 import styles from './SideBarItem.module.css';
 import type {BoardColor} from "@/types/board.ts";
 import clsx from "clsx";
 import {NavLink} from "react-router";
-import {SideBarContext} from "@/components/SideBar/context/sidebar-context.ts";
+import {useSideBarStore} from "@/stores/sideBar-store.ts";
 
 type Props = {
     href?: string;
@@ -16,7 +16,7 @@ type Props = {
 
 
 export default function SideBarItem({href, title, color, icon, onClick}: Props): ReactNode {
-    const {isCollapsed} = useContext(SideBarContext)
+    const isCollapsed = useSideBarStore(state => state.isCollapsed)
 
     const className = clsx(styles['sidebar-item'], color, isCollapsed && styles.Collapsed);
 
