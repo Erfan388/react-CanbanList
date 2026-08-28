@@ -8,7 +8,7 @@ import {useSideBarStore} from "@/stores/sideBar-store.ts";
 
 type Props = {
     href?: string;
-    title: string;
+    title: ReactNode;
     color: BoardColor
     icon: ReactNode;
     onClick?: () => void;

@@ -5,9 +5,11 @@ import SideBarItem from "@/components/SideBar/components/SideBarItem/SideBarItem
 import {BoardsContext} from "@/context/boards-context.ts";
 import Home7LineIcon from '@iconify-react/mingcute/home-7-line';
 import Settings5FillIcon from '@iconify-react/mingcute/settings-5-fill';
+import MoonFillIcon from '@iconify-react/akar-icons/moon-fill';
 import Initials from "@/components/Intials/Initials.tsx";
 import clsx from "clsx";
 import {useSideBarStore} from "@/stores/sideBar-store.ts";
+import {useThemeStore} from "@/stores/theme-store.ts";
 
 
 type SideBarGroup = {
@@ -16,6 +18,8 @@ type SideBarGroup = {
 }
 export default function SideBarGroups(): ReactNode {
     const isCollapsed = useSideBarStore(state => state.isCollapsed);
+
+    const toggleTheme = useThemeStore(state => state.toggleTheme);
 
     const {boards} = useContext(BoardsContext);
 
@@ -38,6 +42,12 @@ export default function SideBarGroups(): ReactNode {
                     title: "setting",
                     color: 'gray',
                     icon: <Settings5FillIcon height="30px"/>
+                },
+                {
+                    title: "dark mode",
+                    color: 'gray',
+                    icon: <MoonFillIcon height="30px"/>,
+                    onClick: toggleTheme,
                 }
             ]
         },
