@@ -30,6 +30,7 @@ export default function SideBarGroups(): ReactNode {
                 {
                     href: '/',
                     title: "Home",
+                    id: "Home",
                     color: 'gray',
                     icon: <Home7LineIcon height="30px"/>
                 }
@@ -41,10 +42,12 @@ export default function SideBarGroups(): ReactNode {
                 {
                     href: '/setting',
                     title: "setting",
+                    id: "setting",
                     color: 'gray',
                     icon: <Settings5FillIcon height="30px"/>
                 },
                 {
+                    id: 'theme',
                     title: <span className={styles.spTitle}>{theme === "light" ? "dark" : "light"} mode</span>,
                     color: 'gray',
                     icon: <MoonFillIcon height="30px"/>,
@@ -55,6 +58,7 @@ export default function SideBarGroups(): ReactNode {
         {
             title: "Boards",
             items: boards.map((board) => ({
+                id: board.id ,
                 href: `/board/${board.id}`,
                 title: board.title,
                 color: board.color,
@@ -65,10 +69,10 @@ export default function SideBarGroups(): ReactNode {
 
     return groups.map((group, groupIndex) => (
         <div key={groupIndex} className={clsx(styles.group, isCollapsed && styles.collapsed)}>
-            {group.title && <div className={styles.title}>{ isCollapsed ? group.title[0] : group.title}</div>}
+            {group.title && <div className={styles.title}>{isCollapsed ? group.title[0] : group.title}</div>}
             <ul>
                 {
-                    group.items.map(item => <li key={item.href}>
+                    group.items.map(item => <li key={item.id}>
                         <SideBarItem {...item} />
                     </li>)
                 }

@@ -7,6 +7,7 @@ import {NavLink} from "react-router";
 import {useSideBarStore} from "@/stores/sideBar-store.ts";
 
 type Props = {
+    id: string;
     href?: string;
     title: ReactNode;
     color: BoardColor

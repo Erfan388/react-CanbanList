@@ -9,18 +9,18 @@ import IconButton from "@/components/IconButton/IconButton.tsx";
 import clsx from "clsx";
 import EmojiRightwardsArrowIcon from '@iconify-react/arcticons/emoji-rightwards-arrow';
 import {useSideBarStore} from "@/stores/sideBar-store.ts";
+import Logo from "@/components/Logo/Logo.tsx";
 
 export default function SideBar(): ReactNode {
     const isCollapsed = useSideBarStore(state => state.isCollapsed);
     const fold = useSideBarStore(state => state.fold);
 
 
-
     return (
-        <aside className={clsx(styles.sideBar , isCollapsed && styles.collapsed)}>
+        <aside className={clsx(styles.sideBar, isCollapsed && styles.collapsed)}>
             <div className={styles.header}>
                 <Link to="/" className={styles.logo}>
-                    <img src="/public/favicon.svg" alt="Canban Icon"/>
+                    <Logo/>
                 </Link>
                 <IconButton className={styles.arrow} onClick={fold}>
                     <EmojiRightwardsArrowIcon/>
@@ -32,7 +32,7 @@ export default function SideBar(): ReactNode {
             </nav>
 
             <div className={styles.footer}>
-                <SideBarItem title="Sign Out" color="gray" icon={<ExitIcon height="30px"/>}/>
+                <SideBarItem id="sign out" title="Sign Out" color="gray" icon={<ExitIcon height="30px"/>}/>
             </div>
         </aside>
     )

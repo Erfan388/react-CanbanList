@@ -1,0 +1,12 @@
+.logo {
+    font-weight: 900;
+    font-style: italic;
+    font-size: 2rem;
+
+    color: var(--color-gray-8);
+
+    &::first-letter {
+        font-size: 3rem;
+    }
+
+}
