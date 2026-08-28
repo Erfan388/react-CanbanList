@@ -19,6 +19,7 @@ type SideBarGroup = {
 export default function SideBarGroups(): ReactNode {
     const isCollapsed = useSideBarStore(state => state.isCollapsed);
 
+    const theme = useThemeStore(state => state.theme);
     const toggleTheme = useThemeStore(state => state.toggleTheme);
 
     const {boards} = useContext(BoardsContext);
@@ -44,7 +45,7 @@ export default function SideBarGroups(): ReactNode {
                     icon: <Settings5FillIcon height="30px"/>
                 },
                 {
-                    title: "dark mode",
+                    title: <span className={styles.spTitle}>{theme === "light" ? "dark" : "light"} mode</span>,
                     color: 'gray',
                     icon: <MoonFillIcon height="30px"/>,
                     onClick: toggleTheme,
