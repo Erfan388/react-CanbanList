@@ -30,7 +30,7 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
     const {dispatchBoards} = useContext(BoardsContext);
 
     const {control, reset ,register, handleSubmit, formState: {errors}} = useForm({
-        defaultValues,
+        defaultValues: defaultValues ?? {color : 'blue'},
         resolver: zodResolver(BoardSchema)
     });
 
@@ -42,7 +42,7 @@ export default function BoardModal({modalRef, boardId, defaultValues}: Props): R
         } else {
             const id = globalThis.crypto.randomUUID();
             dispatchBoards({type: "board_created", board: {id, lists: [], ...values}})
-            toast.success("boardcreated successfully.!");
+            toast.success("board created successfully.!");
         }
         modalRef.current?.close();
     };

@@ -51,7 +51,7 @@ const ListItem = memo
                     <MingcuteEdit2Line/>
                 </IconButton>
             </div>
-            <ListItemModal listIndex={listIndex} modalRef={modalRef} itemIndex={itemIndex} defaultValue={item}/>
+            <ListItemModal listIndex={listIndex} modalRef={modalRef} itemIndex={itemIndex} defaultValues={item}/>
         </>)
 })
 

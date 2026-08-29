@@ -19,7 +19,7 @@ type Values = z.infer<typeof  ListItemSchema>;
 
 type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
     listIndex: number;
-    itemIndex: number;
+    itemIndex?: number;
     defaultValues?: Values;
 };
 

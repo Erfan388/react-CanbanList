@@ -2,9 +2,9 @@ import type {ReactNode} from "react";
 import {Slide, ToastContainer} from "react-toastify";
 import {useThemeStore} from "@/stores/theme-store.ts";
 
-const theme = useThemeStore(state => state.theme);
 
 export default function Toast(): ReactNode {
+const theme = useThemeStore(state => state.theme);
 return (
     <ToastContainer
         position="bottom-right"
