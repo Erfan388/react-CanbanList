@@ -25,14 +25,21 @@ export default function ColorInput({
                                        ...otherProps
                                    }: Props): ReactNode {
     const [uncontrolledValue, setUncontrolledValue] = useState<BoardColor>(defaultValue ?? 'blue');
-    const value = controlledValue ?? uncontrolledValue;
+
+    const isControlled = controlledValue !== undefined;
+    const value = isControlled ? controlledValue : uncontrolledValue;
 
     const id = useId();
 
     const handleButtonClick = (color: BoardColor): void => {
-        setUncontrolledValue(color);
+        if (!isControlled) {
+            setUncontrolledValue(color);
+        }
+
         onChange?.(color);
     }
+
+    console.log("current value:", value);
 
     return <div className={clsx(styles['color-input'], !!error && styles.error, className)}>
         <label htmlFor={id}>{label}</label>
@@ -41,7 +48,7 @@ export default function ColorInput({
                 BOARD_COLORS.map(color => (
                     <button key={color} className={clsx(color, color === value && styles.active)} type='button'
                             onClick={() => handleButtonClick(color)}>
-                        {color === value && <CheckFillIcon />}
+                        {color === value && <CheckFillIcon width="20" height="20" color={color} />}
                     </button>
                 ))
             }
