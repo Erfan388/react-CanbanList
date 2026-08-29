@@ -7,7 +7,9 @@
   border-radius: var(--border-radius-2);
 
   &::backdrop {
-    background-color: hsla(0, 0%, 0%, 40%);
+    background-color: var(--color-surface-2);
+    color: var(--color-text);
+
     backdrop-filter: blur(1px);
   }
 

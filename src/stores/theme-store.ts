@@ -3,7 +3,7 @@ import {persist} from "zustand/middleware";
 import type {Theme} from "@/types/theme.ts";
 
 type ThemeStore = {
-    theme:  Theme;
+    theme: Theme;
     toggleTheme: () => void;
 }
 
@@ -11,8 +11,21 @@ export const useThemeStore = create<ThemeStore>()(
     persist(
         (set) => ({
             theme: "light",
-            toggleTheme: () => set((state) => ({theme: state.theme === "dark" ? "light" : "dark"})),
+            toggleTheme: () =>
+                set((state) =>
+                    ({theme: state.theme === "dark" ? "light" : "dark"})),
         }),
-        {name : 'theme'}
-    )
+        {
+            name: 'theme',
+            onRehydrateStorage: () => {
+                return (state) => {
+                    document.documentElement.dataset.theme = state?.theme ?? "light";
+                };
+            },
+        },
+    ),
 );
+
+useThemeStore.subscribe(state => {
+    document.documentElement.dataset.theme = state.theme;
+})

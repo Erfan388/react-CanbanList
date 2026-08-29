@@ -17,6 +17,7 @@ html {
 body {
   background-color: var(--color-surface-1);
 
+  color: var(--color-text);
   /*inline-size: min(75rem, 50% - 2rem);*/
 
   margin-inline-start: auto;

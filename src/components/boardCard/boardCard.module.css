@@ -36,7 +36,7 @@
                     text-decoration: none;
 
                     &:hover {
-                        color: var(--color-primary);
+                        color: var(--color-main);
                     }
                 }
 
