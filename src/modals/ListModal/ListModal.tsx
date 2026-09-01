@@ -1,17 +1,17 @@
 import {
     type ComponentProps,
     type ReactNode,
-    useContext,
 } from "react";
 
 import TextInput from "@/components/TextInput/TextInput.tsx";
-import {ListsContext} from "@/context/lists-context.ts";
 import {toast} from "react-toastify";
 import FormModal from "@/modals/FormModal/FormModal.tsx";
 import {ListSchema} from "@/schema/list-schema.ts";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
+import {useKanbanStore} from "@/stores/kanban-store/kanban-store.ts";
+import {useParams} from "react-router";
 
 type Values = z.infer<typeof ListSchema>;
 
@@ -21,21 +21,23 @@ type Props = Pick<ComponentProps<typeof FormModal>, "modalRef"> & {
 };
 
 export default function ListModal({modalRef, listIndex, defaultValues}: Props): ReactNode {
-    const {dispatchLists} = useContext(ListsContext);
+    const createList =useKanbanStore((state) => state.createList)
+    const editList =useKanbanStore((state) => state.editList)
+    const removeList =useKanbanStore((state) => state.removeList)
 
+const {boardId} = useParams()
 
-  const { register, reset, handleSubmit, formState: { errors } } = useForm({defaultValues , resolver : zodResolver(ListSchema)});
+    const { register, reset, handleSubmit, formState: { errors } } = useForm({defaultValues , resolver : zodResolver(ListSchema)});
 
 
     const handleFormSubmit = (values: Values): void => {
 
 
         if (listIndex !== undefined) {
-            dispatchLists({type: "list_edited", listIndex, list: values})
+            editList(boardId, listIndex, values)
             toast.success("list edited  successfully.!");
         } else {
-            const id = globalThis.crypto.randomUUID();
-            dispatchLists({type: "list_created", list: {id, items: [], ...values}})
+            createList(boardId, values)
             toast.success("list created successfully.!");
         }
 
@@ -45,7 +47,7 @@ export default function ListModal({modalRef, listIndex, defaultValues}: Props): 
     const handleRemoveButtonClick = (): void => {
         if (listIndex === undefined) return;
 
-        dispatchLists({type: "list_removed", listIndex})
+        removeList(boardId, listIndex);
         toast.success("list removed successfully.!");
 
         modalRef.current?.close();

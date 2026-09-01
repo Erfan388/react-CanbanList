@@ -1,4 +1,4 @@
-import {type PropsWithChildren, type ReactNode, useContext, useState} from "react";
+import {type PropsWithChildren, type ReactNode, useState} from "react";
 
 import {
     DndContext,
@@ -12,14 +12,19 @@ import {
 import type {DraggableData} from "@/types/draggable-data.ts";
 import ListItem from "@/components/ListItem/ListItem.tsx";
 import {detectionCollision} from "@/Providera/DndProvider/utils/collision-detection.ts";
-import {ListsContext} from "@/context/lists-context.ts"
 import List from "@/components/List/List.tsx";
+import {useKanbanStore} from "@/stores/kanban-store/kanban-store.ts";
+import {useParams} from "react-router";
 
 
 type Props = PropsWithChildren;
 
 export default function DndProvider({children}: Props): ReactNode {
-    const {dispatchLists} = useContext(ListsContext)
+   const {boardId} = useParams()
+
+    const moveList =useKanbanStore((state) => state.moveList)
+    const moveItem =useKanbanStore((state) => state.moveItem)
+    const moveItemBetweenLists =useKanbanStore((state) => state.moveItemBetweenLists)
 
     const sensors = useSensors(useSensor(PointerSensor));
 
@@ -32,13 +37,13 @@ export default function DndProvider({children}: Props): ReactNode {
     const handleDragOver = (event: DragOverEvent): void => {
         if (!event.over || event.active.data.current!.isList) return;
 
-        dispatchLists({
-            type: "Item_dragged_over",
-            activeListIndex: event.active.data.current!.listIndex,
-            activeItemIndex: event.active.data.current!.itemIndex,
-            overListIndex: event.over.data.current!.listIndex,
-            overItemIndex: event.over.data.current!.itemIndex,
-        });
+        moveItemBetweenLists(
+            boardId,
+            event.active.data.current!.listIndex,
+            event.active.data.current!.itemIndex,
+            event.over.data.current!.listIndex,
+            event.over.data.current!.itemIndex,
+            );
     }
 
     const handleDragEnd = (event: DragEndEvent): void => {
@@ -47,18 +52,14 @@ export default function DndProvider({children}: Props): ReactNode {
         if (!event.over) return;
 
         if (event.active.data.current!.isList) {
-            dispatchLists({
-                type: "List_dragged_end",
-                activeListIndex: event.active.data.current!.listIndex,
-                overListIndex: event.over.data.current!.listIndex,
-            });
+            moveList(boardId,
+                event.active.data.current!.listIndex,
+                event.over.data.current!.listIndex,);
         } else {
-            dispatchLists({
-                type: "Item_dragged_end",
-                activeListIndex: event.active.data.current!.listIndex,
-                activeItemIndex: event.active.data.current!.itemIndex,
-                overItemIndex: event.over.data.current!.itemIndex,
-            });
+            moveItem(boardId,
+                event.active.data.current!.listIndex,
+                event.active.data.current!.itemIndex,
+                event.over.data.current!.itemtIndex,);
         }
     };
 
